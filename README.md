@@ -37,5 +37,11 @@ Only recurses to `depth` level of subdirectories
 `-p, --print0`
 Prints as null separated string, rather than with new lines(for use with piping to other tools)
 
+`--delete`
+Deletes the files returned by the search
+
+`--delete-silent`
+Silently deletes the files returned by the search
+
 `-h, --help`
 Prints the help information, basically what is included here

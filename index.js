@@ -14,6 +14,8 @@ program
   .option("-e, --empty", "Only print files that are empty")
   .option("-m, --maxdepth <depth>", "Maximum recursion depth")
   .option("-p, --print0", "Prints as null termniated string")
+  .option("--delete", "deletes the returned files")
+  .option("--delete-silent", "silently delete the returned files")
   .action((path, options) => {
     //console.log(options);
     if (fs.existsSync(path)) {
@@ -21,6 +23,17 @@ program
       findRecursiveSync(path, opts, 1);
       if (opts.print0) {
         console.log(print0Array.join("\0"));
+      }
+      if (opts.delete || opts.deleteSilent) {
+        print0Array.forEach(file => {
+          fs.unlink(file, err => {
+            if (err) {
+              console.log(err);
+            } else {
+              if (!opts.deleteSilent) console.log(`${file} was deleted`);
+            }
+          });
+        });
       }
     } else {
       console.log("nodefind: '" + path + "': No such file or directory");
@@ -34,11 +47,22 @@ if (!program.args.length) {
   if (opts.print0) {
     console.log(print0Array.join("\0"));
   }
+  if (opts.delete || opts.deleteSilent) {
+    print0Array.forEach(file => {
+      fs.unlink(file, err => {
+        if (err) {
+          console.log(err);
+        } else {
+          if (!opts.deleteSilent) console.log(`${file} was deleted`);
+        }
+      });
+    });
+  }
 }
 
 function getOpts(program) {
   let opts = {};
-  //console.log(program);
+  console.log(program);
   if (program.hasOwnProperty("name")) {
     opts.pattern = new minimatch(program.name, { matchBase: true });
   }
@@ -56,6 +80,12 @@ function getOpts(program) {
   }
   if (program.print0) {
     opts.print0 = program.print0;
+  }
+  if (program.delete) {
+    opts.delete = program.delete;
+  }
+  if (program.deleteSilent) {
+    opts.deleteSilent = program.deleteSilent;
   }
   return opts;
 }
@@ -76,7 +106,7 @@ function findRecursiveSync(dir, opts, depth) {
     checkAndPrint(dir, opts);
   } else {
     if (!opts.empty) {
-      if (opts.print0) {
+      if (opts.print0 || opts.delete || opts.deleteSilent) {
         print0Array.push(dir);
       } else {
         console.log(dir);
@@ -102,7 +132,7 @@ function findRecursiveSync(dir, opts, depth) {
             checkAndPrint(dir + "/" + file, opts);
           } else {
             if (!opts.empty) {
-              if (opts.print0) {
+              if (opts.print0 || opts.delete || opts.deleteSilent) {
                 print0Array.push(dir + "/" + file);
               } else {
                 console.log(dir + "/" + file);
@@ -121,7 +151,7 @@ function findRecursiveSync(dir, opts, depth) {
       if (opts && (opts.pattern || opts.regex)) {
         checkAndPrint(dir + "/" + file, opts);
       } else {
-        if (opts.print0) {
+        if (opts.print0 || opts.delete || opts.deleteSilent) {
           print0Array.push(dir + "/" + file);
         } else {
           console.log(dir + "/" + file);
@@ -144,7 +174,7 @@ function checkAndPrint(str, opts) {
     }
   }
   if (printIt) {
-    if (opts.print0) {
+    if (opts.print0 || opts.delete || opts.deleteSilent) {
       print0Array.push(str);
     } else {
       console.log(str);
