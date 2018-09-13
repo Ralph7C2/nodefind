@@ -65,6 +65,11 @@ function findRecursiveSync(dir, opts, depth) {
   try {
     files = fs.readdirSync(dir);
   } catch (err) {
+    if ((err.errno = -4052)) {
+      return console.log(
+        `nodefind: ${dir}: The specified starting path is not a directory`
+      );
+    }
     return console.log(err);
   }
   if (opts && (opts.pattern || opts.regex)) {
