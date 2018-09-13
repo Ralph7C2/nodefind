@@ -35,7 +35,7 @@ Only returns empty files
 Only recurses to `depth` level of subdirectories
 
 `-p, --print0`
-Prints as null separated string, rather than with new lines(for use with piping to other tools)
+Prints as null separated string, rather than with new lines
 
 `--delete`
 Deletes the files returned by the search
