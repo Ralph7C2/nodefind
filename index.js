@@ -62,7 +62,7 @@ if (!program.args.length) {
 
 function getOpts(program) {
   let opts = {};
-  console.log(program);
+  //console.log(program);
   if (program.hasOwnProperty("name")) {
     opts.pattern = new minimatch(program.name, { matchBase: true });
   }
