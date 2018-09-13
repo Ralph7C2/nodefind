@@ -7,7 +7,7 @@ Install as a globally available binary with `npm i -g`
 ## Usage
 
 ```
-nodefind [options] [dir]
+nodefind [options] <dir>
 
 Lists all the files and subdirectories in dir recursively, if dir is omitted, the current dir is used
 ```

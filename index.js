@@ -7,6 +7,9 @@ let print0Array = [];
 
 program
   .arguments("<path>")
+  .description(
+    "Find files and subdirectories in the specified path, if path is omitted current directory is used"
+  )
   .option("-n, --name <pattern>", "A glob pattern to match")
   .option("-r, --regex <pattern>", "A regex pattern to match")
   //Consider adding a flag to set using glob AND regex vs glob OR regex, right now it default to AND.
