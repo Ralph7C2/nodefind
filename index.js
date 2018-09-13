@@ -10,7 +10,7 @@ program
   .option("-n, --name <pattern>", "A glob pattern to match")
   .option("-r, --regex <pattern>", "A regex pattern to match")
   //Consider adding a flag to set using glob AND regex vs glob OR regex, right now it default to AND.
-  .option("-L, --list", "Find and follow symbolic links")
+  //.option("-L, --list", "Find and follow symbolic links") Would require research based on cursory testing
   .option("-e, --empty", "Only print files that are empty")
   .option("-m, --maxdepth <depth>", "Maximum recursion depth")
   .option("-p, --print0", "Prints as null termniated string")
